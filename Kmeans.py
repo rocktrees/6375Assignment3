@@ -1,7 +1,6 @@
 from typing import List
 import numpy as np
 import matplotlib.pyplot as plt
-from pathlib import Path
 
 from utils.calc import calcCentroid, calcJaccard, calcSSE
 from utils.util import logClusters
@@ -75,7 +74,7 @@ class Kmeans:
     def plot(self):
     
         plt.title("Elbow method")
-        plt.xlabel("Cluster number")
+        plt.xlabel("K")
         plt.ylabel("SSE")
 
         plt.plot(self.sse_save[::-1])
@@ -88,8 +87,9 @@ class Kmeans:
             for i in range(0, self.k):
                 print(f"Converging K: {self.k}")
                 clusters, sse = self.alg()
-
-                self.sse_save.append(logClusters(i, self.k, sse, clusters))
+                
+                self.sse_save.append(sse)
+                logClusters(i, self.k, sse, clusters)
                 self.reset()
             # only save it at the end. So it can be analyized later
             self.clusters = clusters

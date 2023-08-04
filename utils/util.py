@@ -38,5 +38,3 @@ def logClusters(i, k, sse, clusters):
         file.write(f"Size of each cluster\n")
         for i in range(k):
             file.write(f"\tcluster {(i+1)}: {len(clusters[i])} tweets\n")
-
-    return sse
