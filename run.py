@@ -27,9 +27,9 @@ def get_parser() -> argparse.ArgumentParser:
 def main():
     args = get_parser().parse_args()
 
-    procData = cleanData(args.file_path)
+    tweets = cleanData(args.file_path)
 
-    kmeans = Kmeans(k=args.k, tweets=procData)
+    kmeans = Kmeans(k=args.k, tweets=tweets)
 
     kmeans.fit(args.log)
 
