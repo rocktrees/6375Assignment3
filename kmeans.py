@@ -1,59 +1,18 @@
 from typing import List
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import re
 from pathlib import Path
 
 from utils.calc import calcCentroid, calcJaccard, calcSSE
-
-import argparse
-
-
-def get_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--k",
-        type=int,
-        help=("Number of clusters"),
-        default=10
-    )
-    parser.add_argument("--file_path",
-                        type=str,
-                        default="https://raw.githubusercontent.com/rocktrees/assignment3/main/reuters_health.txt"
-                        )
-    parser.add_argument(
-        "--log",
-        type=bool,
-        default=False
-    )
-    return parser
-
-
-def cleanData(file_path):
-
-    df = pd.read_csv(file_path, header=None, sep="|")
-    tweets = list(df[2])
-
-    cleaned = [tweetFix(tweet) for tweet in tweets]
-    return cleaned
-
-
-def tweetFix(tweet):
-    s = re.sub(r'@\w+|http://\S+', '', tweet)
-    s = re.sub(r'RT.*?:', '', s)
-    s = s.replace(":", "")
-    s = s.replace("#", "")
-    s = s.lower()
-
-    return s
-
+from utils.util import logClusters
 
 class Kmeans:
     def __init__(self, k: int, tweets: List[str]):
         self.k = k
         self.tweets = tweets
         self.converge = False
+        self.sse_save = []
+        self.clusters = []
         self.initialCentroids()
 
     def initialCentroids(self):
@@ -108,24 +67,19 @@ class Kmeans:
         sse = calcSSE(clusters, self.centroids)
         return clusters, sse
     
-    def log(self, i, sse, clusters):
-
-        if i == 0:
-            with open("log.txt", "a") as file:
-                file.write(f"Kmeans log\n")
-                file.write(f"--------------------------------------------------\n")
-                file.write(f"--------------------------------------------------\n")
-
-        with open("log.txt", "a") as file:
-            file.write(f"\nK: {self.k}\tSSE: {sse}\n")
-            file.write(f"Size of each cluster\n")
-            for i in range(self.k):
-                file.write(f"\tcluster {(i+1)}: {len(clusters[i])} tweets\n")
-    
     def reset(self):
         self.k -= 1
         self.initialCentroids()
         self.converge = False
+
+    def plot(self):
+    
+        plt.title("Elbow method")
+        plt.xlabel("Cluster number")
+        plt.ylabel("SSE")
+
+        plt.plot(self.sse_save[::-1])
+        plt.savefig("elbow_plot.png")
 
 
     def fit(self, log:bool):
@@ -135,35 +89,20 @@ class Kmeans:
                 print(f"Converging K: {self.k}")
                 clusters, sse = self.alg()
 
-                self.log(i, sse, clusters)
+                self.sse_save(logClusters(i, sse, clusters))
                 self.reset()
+            # only save it at the end. So it can be analyized later
+            self.clusters = clusters
+            self.plot()
 
         else:
             print(f"Converging K: {self.k}")
             clusters, sse = self.alg()
+            self.clusters = clusters
 
             print("--------------------------")
             print("Covergence Completed")
-            print(f"Sum Squared Error: {sse}")
+            print(f"SSE: {sse}")
 
             for i in range(self.k):
                 print(f"# of tweets in cluster {(i+1)}: {len(clusters[i])}")
-
-
-
-def main():
-    args = get_parser().parse_args()
-
-    log_file = Path("log.txt")
-    if log_file.is_file():
-        log_file.unlink()
-
-    procData = cleanData(args.file_path)
-
-    kmeans = Kmeans(k=args.k, tweets=procData)
-
-    kmeans.fit(args.log)
-
-
-if __name__ == "__main__":
-    main()
