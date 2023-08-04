@@ -5,6 +5,15 @@ hxy170003, kml190002
 
 # CS 6375 Assignment 3
 
+### libraries used
+
+1. argparse
+2. pathlib
+3. re
+4. pandas
+5. numpy
+6. matplotlib.pyplot
+
 ### Instructions
 
 please run in command line.
