@@ -1,6 +1,7 @@
 # Authors
 
 Hyun Guk Yoo, Kim Le
+
 hxy170003, kml190002
 
 # CS 6375 Assignment 3
