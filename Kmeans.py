@@ -89,7 +89,7 @@ class Kmeans:
                 print(f"Converging K: {self.k}")
                 clusters, sse = self.alg()
 
-                self.sse_save(logClusters(i, sse, clusters))
+                self.sse_save.append(logClusters(i, self.k, sse, clusters))
                 self.reset()
             # only save it at the end. So it can be analyized later
             self.clusters = clusters
