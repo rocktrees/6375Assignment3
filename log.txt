@@ -1,0 +1,88 @@
+Kmeans log
+--------------------------------------------------
+--------------------------------------------------
+
+K: 10	SSE: 186.09
+Size of each cluster
+	cluster 1: 889 tweets
+	cluster 2: 522 tweets
+	cluster 3: 590 tweets
+	cluster 4: 702 tweets
+	cluster 5: 310 tweets
+	cluster 6: 377 tweets
+	cluster 7: 496 tweets
+	cluster 8: 25 tweets
+	cluster 9: 496 tweets
+	cluster 10: 312 tweets
+
+K: 9	SSE: 193.11
+Size of each cluster
+	cluster 1: 786 tweets
+	cluster 2: 196 tweets
+	cluster 3: 789 tweets
+	cluster 4: 1176 tweets
+	cluster 5: 51 tweets
+	cluster 6: 738 tweets
+	cluster 7: 305 tweets
+	cluster 8: 258 tweets
+	cluster 9: 420 tweets
+
+K: 8	SSE: 197.77
+Size of each cluster
+	cluster 1: 369 tweets
+	cluster 2: 501 tweets
+	cluster 3: 92 tweets
+	cluster 4: 170 tweets
+	cluster 5: 782 tweets
+	cluster 6: 959 tweets
+	cluster 7: 1437 tweets
+	cluster 8: 409 tweets
+
+K: 7	SSE: 205.74
+Size of each cluster
+	cluster 1: 504 tweets
+	cluster 2: 763 tweets
+	cluster 3: 102 tweets
+	cluster 4: 575 tweets
+	cluster 5: 673 tweets
+	cluster 6: 1886 tweets
+	cluster 7: 216 tweets
+
+K: 6	SSE: 203.17
+Size of each cluster
+	cluster 1: 611 tweets
+	cluster 2: 1550 tweets
+	cluster 3: 487 tweets
+	cluster 4: 292 tweets
+	cluster 5: 1296 tweets
+	cluster 6: 483 tweets
+
+K: 5	SSE: 213.76
+Size of each cluster
+	cluster 1: 1441 tweets
+	cluster 2: 844 tweets
+	cluster 3: 1071 tweets
+	cluster 4: 385 tweets
+	cluster 5: 978 tweets
+
+K: 4	SSE: 228.08
+Size of each cluster
+	cluster 1: 461 tweets
+	cluster 2: 2575 tweets
+	cluster 3: 1510 tweets
+	cluster 4: 173 tweets
+
+K: 3	SSE: 237.01
+Size of each cluster
+	cluster 1: 2193 tweets
+	cluster 2: 1570 tweets
+	cluster 3: 956 tweets
+
+K: 2	SSE: 242.24
+Size of each cluster
+	cluster 1: 2168 tweets
+	cluster 2: 2551 tweets
+
+K: 1	SSE: 301.11
+Size of each cluster
+	cluster 1: 4719 tweets

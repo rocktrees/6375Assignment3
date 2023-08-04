@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import re
+from pathlib import Path
 
 from utils.calc import calcCentroid, calcJaccard, calcSSE
 
@@ -21,10 +22,15 @@ def get_parser() -> argparse.ArgumentParser:
                         type=str,
                         default="https://raw.githubusercontent.com/rocktrees/assignment3/main/reuters_health.txt"
                         )
+    parser.add_argument(
+        "--log",
+        type=bool,
+        default=False
+    )
     return parser
 
 
-def preProc(file_path):
+def cleanData(file_path):
 
     df = pd.read_csv(file_path, header=None, sep="|")
     tweets = list(df[2])
@@ -91,36 +97,72 @@ class Kmeans:
 
         # if we made it through the loop, it means all centroids did not change!
         return True
-
-    def fit(self):
-        print("Converging")
-        clusters = []
+    
+    def alg(self):
+        clusters = 0
         while self.converge == False:
             clusters = self.clustering()
             new_centroids = calcCentroid(clusters, self.k)
             self.converge = self.convgCheck(new_centroids)
 
-        print("--------------------------")
-        print("Covergence Completed")
-        calcSSE_result = calcSSE(clusters, self.centroids)
+        sse = calcSSE(clusters, self.centroids)
+        return clusters, sse
+    
+    def log(self, i, sse, clusters):
 
-        print("Sum Squared Error Result Is Shown Below ->")
-        print(calcSSE_result)
+        if i == 0:
+            with open("log.txt", "a") as file:
+                file.write(f"Kmeans log\n")
+                file.write(f"--------------------------------------------------\n")
+                file.write(f"--------------------------------------------------\n")
 
-        for i in range(self.k):
-            print(
-                f"Total Number Of Tweets In Cluster {(i+1)} -> {len(clusters[i])}")
+        with open("log.txt", "a") as file:
+            file.write(f"\nK: {self.k}\tSSE: {sse}\n")
+            file.write(f"Size of each cluster\n")
+            for i in range(self.k):
+                file.write(f"\tcluster {(i+1)}: {len(clusters[i])} tweets\n")
+    
+    def reset(self):
+        self.k -= 1
+        self.initialCentroids()
+        self.converge = False
+
+
+    def fit(self, log:bool):
+
+        if log:
+            for i in range(0, self.k):
+                print(f"Converging K: {self.k}")
+                clusters, sse = self.alg()
+
+                self.log(i, sse, clusters)
+                self.reset()
+
+        else:
+            print(f"Converging K: {self.k}")
+            clusters, sse = self.alg()
+
+            print("--------------------------")
+            print("Covergence Completed")
+            print(f"Sum Squared Error: {sse}")
+
+            for i in range(self.k):
+                print(f"# of tweets in cluster {(i+1)}: {len(clusters[i])}")
+
 
 
 def main():
     args = get_parser().parse_args()
 
-    procData = preProc(args.file_path)
+    log_file = Path("log.txt")
+    if log_file.is_file():
+        log_file.unlink()
 
-    # newKmeans(procData, k=args.k, centro=None)
+    procData = cleanData(args.file_path)
+
     kmeans = Kmeans(k=args.k, tweets=procData)
 
-    kmeans.fit()
+    kmeans.fit(args.log)
 
 
 if __name__ == "__main__":

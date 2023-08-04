@@ -48,4 +48,4 @@ def calcSSE(cluster, centro):
             dist = calcJaccard(centroid_tweets, tweet)**2
             sse = sse + dist
 
-    return sse
+    return round(sse,2)
